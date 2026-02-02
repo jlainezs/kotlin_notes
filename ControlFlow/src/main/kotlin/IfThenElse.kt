@@ -20,4 +20,16 @@ fun main() {
     } else {
         println("Number is less than 10")
     }
+
+    // use a boolean operator
+    if (isActive && number >= 11)
+        println("Both conditions are true")
+    else
+        println("At least one of the conditions is false")
+
+    // use NOT operator (!)
+    if (!isActive)
+        println("isActive is false")
+    else
+        println("isActive is true")
 }
