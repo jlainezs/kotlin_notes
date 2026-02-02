@@ -6,6 +6,8 @@ fun main() {
         println("Inactive")
     }
 
+    println("----------------")
+
     val number = 10
     if (number >= 11){
         println("Number is greater than 11")
@@ -32,4 +34,19 @@ fun main() {
         println("isActive is false")
     else
         println("isActive is true")
+
+    println("----------------")
+
+    // initializing a variable using a logical expression
+    val textIsActive = if (isActive) {
+        println("isActive is true")
+        "Active" // assigned to textIsActive
+    } else {
+        println("isActive is false")
+        "Inactive"
+    }
+    println(textIsActive)
+
+    val thisIsAlsoCorrect = if (!isActive) "Active" else 12
+    println(thisIsAlsoCorrect)
 }
