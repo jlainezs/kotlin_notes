@@ -47,6 +47,8 @@ Constructors are used to create instances of classes.
 val aCar = Car()
 ```
 
+#### Primary constructor
+
 We can define parameters in the constructor. Those parameters become properties if they are declared with ``val`` or ``var``.
 
 Properties declared in the primary constructor are accessible by member functions of the class
@@ -55,7 +57,7 @@ Properties declared in the primary constructor are accessible by member function
 class Car(val name: String, val model: String, val color: String, val doors: Int) {
 }
 ```
-We can declare parameters in the constructor without ``val`` or ``var``, but they are only availbale inside the class body.
+We can declare parameters in the constructor without ``val`` or ``var``, but they are only available inside the class body.
 ```
 class AClassSample(theInstanceName: String){
     var name = theInstanceName;
