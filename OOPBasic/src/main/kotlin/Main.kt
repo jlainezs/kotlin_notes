@@ -1,39 +1,7 @@
-// Simple car class definition
-class SimpleCar {
-    var name = ""
-    var model = ""
-    var color = ""
-    var doors = 0
 
-    fun move(){
-        // Use to class properties
-        println("The car $name ${this.model} is moving")
-    }
-
-    fun stop(){
-        println("The car $name has stopped")
-    }
-}
-
-// Class with primary constructor
-class ConstructorCar(
-    val name: String,
-    val model: String,
-    val color: String,
-    val doors: Int) {
-
-    fun info(){
-        println("The car is $name $model $color with $doors doors")
-    }
-
-    fun move(){
-        println("The car $name ${this.model} is moving")
-    }
-}
-
-fun useSimpleCar(){
+fun useCar(){
     // instantiate a Car
-    val car1 = SimpleCar()
+    val car1 = Car()
 
     // set properties
     car1.name = "BMW"
@@ -49,7 +17,7 @@ fun useSimpleCar(){
     car1.stop()
 
     // another instance
-    val car2 = SimpleCar()
+    val car2 = Car()
     car2.name = "Mercedes"
     car2.model = "C200"
     car2.color = "Black"
@@ -69,7 +37,15 @@ fun useConstructorCar(){
 }
 
 fun main(args: Array<String>) {
-    useSimpleCar()
+    useCar()
     println()
     useConstructorCar()
+    println()
+    val user = User("Alice", "Smith", 23)
+    user.info()
+    val friend = User("Juan")
+    friend.info()
+    val user3 = User("John", "Smith")
+    user3.info()
+
 }
