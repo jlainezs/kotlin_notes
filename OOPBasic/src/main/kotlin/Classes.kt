@@ -59,3 +59,13 @@ class User(firstName: String, var lastName: String, var age: Int) {
         println("Name: $firstName, Last Name: $lastName, Age: $age")
     }
 }
+
+class LateUser(var firstName: String, var lastName: String, var age: Int) {
+    lateinit var favoriteMovie: String
+}
+
+class Calculator() {
+    companion object {
+        fun sum(a: Int, b: Int) = a + b
+    }
+}

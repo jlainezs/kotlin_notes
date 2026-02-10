@@ -36,6 +36,13 @@ fun useConstructorCar(){
     car2.move()
 }
 
+fun useLateUser(){
+    val user = LateUser("Alice", "Smith", 23)
+    // initializes the favoriteMovie property
+    user.favoriteMovie = "Inception"
+    println("Favorite movie: ${user.favoriteMovie}")
+}
+
 fun main(args: Array<String>) {
     useCar()
     println()
@@ -48,4 +55,10 @@ fun main(args: Array<String>) {
     val user3 = User("John", "Smith")
     user3.info()
 
+    println()
+    useLateUser()
+
+    println()
+    val result = Calculator.sum(1, 2)
+    println("The result is $result")
 }
