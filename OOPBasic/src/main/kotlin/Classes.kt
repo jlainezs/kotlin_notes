@@ -41,9 +41,7 @@ class User(firstName: String, var lastName: String, var age: Int) {
     }
 
     init {
-        if (firstName.lowercase().startsWith("a")) {
-            println("The name doesn't start with 'A' or 'a'")
-        }
+        println("User $firstName created")
     }
 
     var firstName: String = firstName
@@ -68,4 +66,9 @@ class Calculator() {
     companion object {
         fun sum(a: Int, b: Int) = a + b
     }
+}
+
+/// Singleton sample
+class Database private constructor() {
+
 }

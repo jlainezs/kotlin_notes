@@ -43,22 +43,47 @@ fun useLateUser(){
     println("Favorite movie: ${user.favoriteMovie}")
 }
 
-fun main(args: Array<String>) {
-    useCar()
-    println()
-    useConstructorCar()
-    println()
+fun useUsers(){
     val user = User("Alice", "Smith", 23)
     user.info()
     val friend = User("Juan")
     friend.info()
     val user3 = User("John", "Smith")
     user3.info()
+}
 
-    println()
-    useLateUser()
-
-    println()
+fun useCalculator(){
     val result = Calculator.sum(1, 2)
     println("The result is $result")
 }
+
+fun useLazyUserInitialization(){
+    val user1 = User("Alice", "Smith", 23)
+
+    val user2 by lazy {
+        User("Juan", "Perez", 25)
+    }
+
+    println("User 1: ${user1.firstName}")
+    println("User 2: ${user2.firstName}")
+}
+
+fun main(args: Array<String>) {
+    useCar()
+    println()
+    useConstructorCar()
+    println()
+
+    useUsers()
+    println()
+
+    useLateUser()
+    println()
+
+    useCalculator()
+    println()
+
+    useLazyUserInitialization()
+    println()
+}
+
