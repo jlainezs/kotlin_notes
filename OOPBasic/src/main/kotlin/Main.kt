@@ -1,89 +1,26 @@
-
-fun useCar(){
-    // instantiate a Car
-    val car1 = Car()
-
-    // set properties
-    car1.name = "BMW"
-    car1.model = "M5"
-    car1.color = "Blue"
-    car1.doors = 2
-
-    // get properties
-    println("The car is ${car1.name} ${car1.model} ${car1.color} with ${car1.doors} doors")
-
-    // call methods
-    car1.move()
-    car1.stop()
-
-    // another instance
-    val car2 = Car()
-    car2.name = "Mercedes"
-    car2.model = "C200"
-    car2.color = "Black"
-    car2.doors = 4
-    println("The car is ${car2.name} ${car2.model} ${car2.color} with ${car2.doors} doors")
-    car2.move()
-    car2.stop()
+enum class DirectionSimple{
+    NORTH, SOUTH, EAST, WEST
 }
 
-fun useConstructorCar(){
-    val car1 = ConstructorCar("BMW", "M5", "Blue", 2)
-    val car2 = ConstructorCar("Mercedes", "C200", "Black", 4)
-    car1.info()
-    car1.move()
-    car2.info()
-    car2.move()
-}
+enum class Direction(var direction: String, var distance: Int){
+    NORTH("North", 1),
+    SOUTH("South", 1),
+    EAST("East", 1),
+    WEST("West", 1)
 
-fun useLateUser(){
-    val user = LateUser("Alice", "Smith", 23)
-    // initializes the favoriteMovie property
-    user.favoriteMovie = "Inception"
-    println("Favorite movie: ${user.favoriteMovie}")
-}
-
-fun useUsers(){
-    val user = User("Alice", "Smith", 23)
-    user.info()
-    val friend = User("Juan")
-    friend.info()
-    val user3 = User("John", "Smith")
-    user3.info()
-}
-
-fun useCalculator(){
-    val result = Calculator.sum(1, 2)
-    println("The result is $result")
-}
-
-fun useLazyUserInitialization(){
-    val user1 = User("Alice", "Smith", 23)
-
-    val user2 by lazy {
-        User("Juan", "Perez", 25)
+    fun printData() {
+        println("Direction = $direction and Distance = $distance")
     }
-
-    println("User 1: ${user1.firstName}")
-    println("User 2: ${user2.firstName}")
 }
 
 fun main(args: Array<String>) {
-    useCar()
-    println()
-    useConstructorCar()
-    println()
-
-    useUsers()
-    println()
-
-    useLateUser()
-    println()
-
-    useCalculator()
-    println()
-
-    useLazyUserInitialization()
-    println()
+    println(DirectionSimple.NORTH)
+    println(Direction.NORTH)
+    println("--")
+    for (direction in Direction.entries) {
+        println(direction)
+    }
+    println(Direction.NORTH.name)
+    Direction.NORTH.printData()
 }
 
