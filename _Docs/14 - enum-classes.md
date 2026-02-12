@@ -46,7 +46,7 @@ println(MyEnum.VAL2.name)
 ```
 enum class MyEnum(var param:String) {
     VAL1(param="value),
-    VAL2(param="value)
+    VAL2(param="value);
 
     func myFunc()
 }
@@ -55,6 +55,8 @@ and the usage is
 ```
 MyEnum.VAL1.myFunc()
 ```
+
+Note the ``;`` after the enum values. Last enum value should be followed by a ``;`` if there are functions in the enum or a ``}`` to finish the enum declaration. 
 
 ## Use in variables
 USe it as a simple type
