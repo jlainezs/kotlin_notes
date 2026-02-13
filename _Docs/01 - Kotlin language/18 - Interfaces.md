@@ -79,3 +79,6 @@ class MyClass: A,D{
     }
 }
 ```
+## Reference
+- [Interfaces, Kotlin language guide](https://kotlinlang.org/docs/interfaces.html#jvm-default-method-generation-for-interface-functions)
+- 
