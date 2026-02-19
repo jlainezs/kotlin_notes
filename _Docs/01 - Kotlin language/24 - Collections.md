@@ -160,4 +160,4 @@ println("----")
 
 ## References
 
-- [Oarition map in Kotlin](https://dev.to/pfilaretov42/tiny-partition-map-in-kotlin-23ol)
+- [Partition map in Kotlin](https://dev.to/pfilaretov42/tiny-partition-map-in-kotlin-23ol)
