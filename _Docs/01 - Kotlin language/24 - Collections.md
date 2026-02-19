@@ -80,3 +80,84 @@ To remove an element
 ```
 m.remove(1)
 ```
+
+## Filtering
+
+Get a subset of a collection by evaluating its elements.
+
+- list.filter
+- list.filterIndex
+- list.filterNot
+
+When filtering on a list or a set we get a list. The result of filtering a map is a map.
+
+Filter functions accept a predicate for the boolean expression to use when evaluating each element.
+
+```
+val l = listOf("AA", "B", "CCC")
+val filtered = l.filter { it.length > 2 }
+```
+
+On maps, the predicate element can check the key and the value of the item
+
+```
+val m = mapOf<Int, String>(1 to "A", 2 to "BB")
+val m1 = m.filter {it.key > 0 && it.value.length > 1}
+```
+
+## Partitions
+
+Partitions are a kind of filter which keep not matching items on a separate list, so you have a pair of lists as a result. Partitions are only available on lists.
+
+```
+val numbers = listOf(1,2,3,4)
+val (even, odd) = numbers.partition { it % 2 == 0 }
+```
+
+## Testing predicates
+
+Those are functions that test the predicate over the collection elements.
+
+- list.Any : returns true if any of the elements matches the predicate.
+- list.None: returns true if none of the elements matches the predicate.
+- list.All: returns true when all the elements match the predicate.
+
+## + and - operators
+Kotlin defines + and - operators on collections.
+The + operator is an alternative to the .add method
+
+```
+val l = mutableListOf(1,2,3,4,5)
+val l1 = l + 6
+```
+
+We can also add or remove a list of items from a list
+
+```
+val l2 = l - mutableListOf(2,3)
+```
+## Grouping
+
+Group returns a map where:
+
+- Key: is the predicate value
+- Value: is a list of items that matches the predicate
+
+We can also apply a transformation on the value
+
+```
+val numbers = listOf("one", "two", "three", "four", "five")
+val g = numbers.groupBy { it.first().uppercase() }
+println(g)
+println("----")
+val g2 = numbers.groupBy(
+    keySelector = { it.first().uppercase() },
+    valueTransform = { it.uppercase() }
+)
+println(g2)
+println("----")
+```
+
+## References
+
+- [Oarition map in Kotlin](https://dev.to/pfilaretov42/tiny-partition-map-in-kotlin-23ol)
