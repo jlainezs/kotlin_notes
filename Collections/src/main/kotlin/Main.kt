@@ -81,6 +81,51 @@ fun grouping(){
     println("----")
 }
 
+fun aggregate(){
+    val numbers = listOf(1, 2, 3, 4, 5)
+    println(numbers.sum())
+    println(numbers.maxOrNull())
+    println(numbers.minOrNull())
+    println(numbers.average())
+    println("----")
+    println(numbers.sumOf { it * 2 })
+}
+
+data class Laptop(val brand: String, val year:Int, val ram:Int, val price:Double): Comparable<Laptop>{
+    override fun compareTo(other: Laptop): Int {
+       // the succint way is to use Int.compareTo function
+       // return price.compareTo(other.price)
+        return if (this.price > other.price) {
+            1
+        } else if (this.price < other.price) {
+            -1
+        } else {
+            0
+        }
+    }
+}
+
+class ComparatorRam: Comparator<Laptop>{
+    override fun compare(o1: Laptop, o2: Laptop): Int {
+        return o1.ram.compareTo(o2.ram)
+    }
+}
+
+fun ordering(){
+    val numbers = mutableListOf(2,5,1,40,20,100,60)
+    numbers.sorted().forEach { println(it) }
+    println("----")
+    val l = mutableListOf(
+        Laptop("Dell", 2021, 16, 1000.0),
+        Laptop("Acer", 2019, 16, 900.0),
+        Laptop("HP", 2020, 8, 700.0),
+    )
+    l.sortedBy { it.ram }.forEach { println("${it.ram} GB RAM") }
+    l.sorted().forEach { println("${it.price}€") }
+    println("----")
+    l.sortedWith(ComparatorRam()).forEach { println("${it.ram} GB RAM") }
+}
+
 fun main() {
     list()
     println("=======")
@@ -95,6 +140,10 @@ fun main() {
     testing()
     println("=======")
     grouping()
+    println("=======")
+    aggregate()
+    println("=======")
+    ordering()
 }
 
 class User(val name: String)
