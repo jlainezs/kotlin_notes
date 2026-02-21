@@ -1,6 +1,8 @@
-# Flow control
+# Conditional execution
 
 ## if
+
+Note Kotlin defines ``if..else`` as an expression, not an statement.
 
 ```
 if (<expression>) {

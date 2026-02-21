@@ -1,6 +1,6 @@
 # Object expressions
 
-Declare an instantiate an object using aninymous classes.
+Declare an instantiate an object using anonymous classes.
 
 ```
 interface OnClickListener{
