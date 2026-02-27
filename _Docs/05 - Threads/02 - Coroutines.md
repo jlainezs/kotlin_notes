@@ -39,7 +39,85 @@ While the suspend keyword is part of the core Kotlin language, most coroutine fe
 | Scalability   | Limited                    | Highly scalable         |
 | Blocking      | Yes, it can block threads. | No, it uses suspension. |
 
+## Globalscope
+
+GlobalScope in Kotlin is a global CoroutineScope that allows you to launch coroutines that are not tied to any specific job or lifecycle, meaning they can run throughout the application's lifetime. However, using GlobalScope can lead to resource leaks and is generally discouraged unless you have a specific need for long-running background tasks.
+
+## Cancellation, timeout and exceptions
+
+Note: Thread.* functions are not playing well with coroutine package functions.
+
+### Cancellation
+
+A reason to cancel a coroutine is that it takes too much time to complete or its result is not going to be used.
+
+Inside the coroutine, we can check the ``isActive`` boolean property to check is the launch was cancelled
+
+```
+val job1 = launch {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+
+```
+### Timeout
+
+We can specify the amount of time a coroutine needs to do its job. Instead of launch use ``withTimeOut`` which accepts a limit of time.
+
+```
+val job1 = withTimeout(1000) {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+
+```
+
+we catch the timeout exception in the invokeOnCompletion method of the job
+
+```
+job1.invokeOnCompletion {
+    it?.let {
+        println("Exception: ${it.message}")
+    } ?: println("Job completed successfully")
+}
+```
+
+If we don't need/want an error when the timeout is reached, we can use withTimeoutOrNull method
+
+```
+val job1 = withTimeoutOrNoull(1000) {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+```
+
+
+### Exceptions
+
+Cancelling a coroutine causes an exception. We can catch that exception inside the coroutine
+```
+val job1 = launch {
+    try {
+        ...
+    } catch (e: CancellationException) {
+        ...
+    } finally {
+        ...
+    }
+}
+
+```
+
 ## References
 
 - [Coroutines, Kotlin language guide](https://kotlinlang.org/docs/coroutines-overview.html)
--
+- [Globalscope, Kotlin language guide](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/)
