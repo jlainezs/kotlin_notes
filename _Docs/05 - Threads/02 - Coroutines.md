@@ -117,6 +117,29 @@ val job1 = launch {
 
 ```
 
+Coroutines can throw its own exceptions. We can handle them in a try...catch block inside the ``launch`` of each coroutine but this will lead to a complicated coded. A better approach is to use the ``CoroutineExceptionHandler``
+
+```
+val handler = CoroutineExceptionHandler{_,exception ->
+    println("error: ${exception.message})
+}
+```
+pass the handler on the launch and run the coroutines under supervisor scope
+
+```
+val parentJob = CoroutineScope(Default).launch(handler){
+    supervisorScope {
+        launch{}
+        launch{}
+        ...
+        launch{}
+    }
+}
+```
+
+if any coroutine fails, the handler will be executed and the exception won't affect the parentJob.
+
+
 ## References
 
 - [Coroutines, Kotlin language guide](https://kotlinlang.org/docs/coroutines-overview.html)
