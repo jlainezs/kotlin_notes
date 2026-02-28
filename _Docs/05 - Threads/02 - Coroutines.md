@@ -139,6 +139,39 @@ val parentJob = CoroutineScope(Default).launch(handler){
 
 if any coroutine fails, the handler will be executed and the exception won't affect the parentJob.
 
+## Run modes
+### Parallel run
+
+This coroutines
+
+```
+launch{...}
+launch{...}
+launch{...}
+```
+will run in parallel: start at the same time, do the job and finish.
+
+### Sequential run
+Calling ``join`` on the job
+
+```
+launch{...}.join()
+launch{...}.join()
+launch{...}.join()
+```
+will cause the coroutines to be executed sequentially
+
+### lazy run
+
+When running async, we can avoid the execution of a coroutine if its result is not voing to be used.
+
+```
+val job1 = async(start=Coroutine.Laze){
+    println("HelloWorld!")
+}
+println(job1.await())
+```
+If last line is commented, job1 will not be executed.
 
 ## References
 
