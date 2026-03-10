@@ -1,0 +1,179 @@
+# Coroutines
+
+Applications often need to perform multiple tasks at the same time, such as responding to user input, loading data, or updating the screen. To support this, they rely on concurrency, which allows operations to run independently without blocking each other.
+
+The most common way to run tasks concurrently is by using threads, which are independent paths of execution managed by the operating system. However, threads are relatively heavy, and creating many of them can lead to performance issues.
+
+To support efficient concurrency, Kotlin uses asynchronous programming built around coroutines, which let you write asynchronous code in a natural, sequential style using suspending functions. Coroutines are lightweight alternatives to threads. They can suspend without blocking system resources and are resource-friendly, making them better suited for fine-grained concurrency.
+
+Most coroutine features are provided by the kotlinx.coroutines library, which includes tools for launching coroutines, handling concurrency, working with asynchronous streams, and more.
+
+## Basics
+
+To create applications that perform multiple tasks at once, a concept known as concurrency, Kotlin uses coroutines. A coroutine is a suspendable computation that lets you write concurrent code in a clear, sequential style. Coroutines can run concurrently with other coroutines and potentially in parallel.
+
+On the JVM and in Kotlin/Native, all concurrent code, such as coroutines, runs on threads, managed by the operating system. Coroutines can suspend their execution instead of blocking a thread. This allows one coroutine to suspend while waiting for some data to arrive and another coroutine to run on the same thread, ensuring effective resource utilization.
+
+## Suspending functions
+
+The most basic building block of coroutines is the suspending function. It allows a running operation to pause and resume later without affecting the structure of your code.
+
+To declare a suspending function, use the suspend keyword:
+
+```
+suspend fun greet() {
+    println("Hello world from a suspending function")
+}
+```
+
+You can only call a suspending function from another suspending function.
+
+While the suspend keyword is part of the core Kotlin language, most coroutine features are available through the kotlinx.coroutines library.
+
+## Comparison: Thread vs. Coroutines
+
+| Appearance    | 	Thread                    | Coroutines              |
+|---------------|----------------------------|-------------------------|
+| Management    | Operating System           | Kotlin                  |
+| Creation cost | High                       | Low                     |
+| Scalability   | Limited                    | Highly scalable         |
+| Blocking      | Yes, it can block threads. | No, it uses suspension. |
+
+## Globalscope
+
+GlobalScope in Kotlin is a global CoroutineScope that allows you to launch coroutines that are not tied to any specific job or lifecycle, meaning they can run throughout the application's lifetime. However, using GlobalScope can lead to resource leaks and is generally discouraged unless you have a specific need for long-running background tasks.
+
+## Cancellation, timeout and exceptions
+
+Note: Thread.* functions are not playing well with coroutine package functions.
+
+### Cancellation
+
+A reason to cancel a coroutine is that it takes too much time to complete or its result is not going to be used.
+
+Inside the coroutine, we can check the ``isActive`` boolean property to check is the launch was cancelled
+
+```
+val job1 = launch {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+
+```
+### Timeout
+
+We can specify the amount of time a coroutine needs to do its job. Instead of launch use ``withTimeOut`` which accepts a limit of time.
+
+```
+val job1 = withTimeout(1000) {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+
+```
+
+we catch the timeout exception in the invokeOnCompletion method of the job
+
+```
+job1.invokeOnCompletion {
+    it?.let {
+        println("Exception: ${it.message}")
+    } ?: println("Job completed successfully")
+}
+```
+
+If we don't need/want an error when the timeout is reached, we can use withTimeoutOrNull method
+
+```
+val job1 = withTimeoutOrNoull(1000) {
+    val result1 = getData1(Thread.currentThread().name)
+    if (!isActive){
+        return@launch
+    }
+    println("result1: $result1")
+}
+```
+
+
+### Exceptions
+
+Cancelling a coroutine causes an exception. We can catch that exception inside the coroutine
+```
+val job1 = launch {
+    try {
+        ...
+    } catch (e: CancellationException) {
+        ...
+    } finally {
+        ...
+    }
+}
+
+```
+
+Coroutines can throw its own exceptions. We can handle them in a try...catch block inside the ``launch`` of each coroutine but this will lead to a complicated coded. A better approach is to use the ``CoroutineExceptionHandler``
+
+```
+val handler = CoroutineExceptionHandler{_,exception ->
+    println("error: ${exception.message})
+}
+```
+pass the handler on the launch and run the coroutines under supervisor scope
+
+```
+val parentJob = CoroutineScope(Default).launch(handler){
+    supervisorScope {
+        launch{}
+        launch{}
+        ...
+        launch{}
+    }
+}
+```
+
+if any coroutine fails, the handler will be executed and the exception won't affect the parentJob.
+
+## Run modes
+### Parallel run
+
+This coroutines
+
+```
+launch{...}
+launch{...}
+launch{...}
+```
+will run in parallel: start at the same time, do the job and finish.
+
+### Sequential run
+Calling ``join`` on the job
+
+```
+launch{...}.join()
+launch{...}.join()
+launch{...}.join()
+```
+will cause the coroutines to be executed sequentially
+
+### lazy run
+
+When running async, we can avoid the execution of a coroutine if its result is not voing to be used.
+
+```
+val job1 = async(start=Coroutine.Laze){
+    println("HelloWorld!")
+}
+println(job1.await())
+```
+If last line is commented, job1 will not be executed.
+
+## References
+
+- [Coroutines, Kotlin language guide](https://kotlinlang.org/docs/coroutines-overview.html)
+- [Globalscope, Kotlin language guide](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-global-scope/)

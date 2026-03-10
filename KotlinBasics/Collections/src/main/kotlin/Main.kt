@@ -1,0 +1,149 @@
+fun list(){
+    val il = listOf("A", "B")
+    il.forEach { println(it) }
+    println("----")
+
+    val l = mutableListOf<String>("A", "B")
+    l.add("C")
+    l.forEach { println(it) }
+    l.remove("A")
+    l.forEach { println(it) }
+}
+
+fun map(){
+    val m = mapOf<Int,String>(1 to "A", 2 to "B")
+    println(m[1])
+
+    m.forEach { println("${it.key} -> ${it.value}") }
+    m.forEach { u, v -> println("${u} -> ${v}") }
+    println("----")
+
+    val m1 = mutableMapOf<Int,String>(1 to "A", 2 to "B")
+    // add
+    m1[2] = "C"
+    m1.forEach { println("${it.key} -> ${it.value}") }
+}
+
+fun set(){
+    val s = setOf<String>("A", "B")
+    println(s.contains("A"))
+    println("----")
+
+    val ms = mutableSetOf<String>("A", "B")
+    ms.add("C")
+    println(ms.contains("C"))
+    ms.add("C")
+    ms.forEach { println(it) }
+    ms.remove("A")
+    ms.forEach { println(it) }
+}
+
+fun filtering(){
+    val l = listOf(1, 2, 3, 4, 5)
+    val l2 = l.filter { it % 2 == 0 }
+    println(l2)
+    println("----")
+
+    val numbers = listOf(1, 2, 3, 4, 5)
+    val filterIndex = numbers.filterIndexed { index, value -> index % 2 != 0 && value % 2 == 0 }
+    println(filterIndex)
+    println("----")
+    val filteredNot = numbers.filterNot { it % 2 == 0 }
+    println(filteredNot)
+    println("----")
+}
+
+fun partition(){
+    val numbers = listOf(1, 2, 3, 4, 5)
+    val (even, odd) = numbers.partition { it % 2 == 0 }
+    println(even)
+    println(odd)
+    println("----")
+}
+
+fun testing(){
+    val numbers = listOf(1, 2, 3, 4, 5)
+    println(numbers.any { it % 2 == 0 })
+    println(numbers.none { it == 0 })
+    println(numbers.all { it < 10 })
+}
+
+fun grouping(){
+    val numbers = listOf("one", "two", "three", "four", "five")
+    val g = numbers.groupBy { it.first().uppercase() }
+    println(g)
+    println("----")
+    val g2 = numbers.groupBy(
+        keySelector = { it.first().uppercase() },
+        valueTransform = { it.uppercase() }
+    )
+    println(g2)
+    println("----")
+}
+
+fun aggregate(){
+    val numbers = listOf(1, 2, 3, 4, 5)
+    println(numbers.sum())
+    println(numbers.maxOrNull())
+    println(numbers.minOrNull())
+    println(numbers.average())
+    println("----")
+    println(numbers.sumOf { it * 2 })
+}
+
+data class Laptop(val brand: String, val year:Int, val ram:Int, val price:Double): Comparable<Laptop>{
+    override fun compareTo(other: Laptop): Int {
+       // the succint way is to use Int.compareTo function
+       // return price.compareTo(other.price)
+        return if (this.price > other.price) {
+            1
+        } else if (this.price < other.price) {
+            -1
+        } else {
+            0
+        }
+    }
+}
+
+class ComparatorRam: Comparator<Laptop>{
+    override fun compare(o1: Laptop, o2: Laptop): Int {
+        return o1.ram.compareTo(o2.ram)
+    }
+}
+
+fun ordering(){
+    val numbers = mutableListOf(2,5,1,40,20,100,60)
+    numbers.sorted().forEach { println(it) }
+    println("----")
+    val l = mutableListOf(
+        Laptop("Dell", 2021, 16, 1000.0),
+        Laptop("Acer", 2019, 16, 900.0),
+        Laptop("HP", 2020, 8, 700.0),
+    )
+    l.sortedBy { it.ram }.forEach { println("${it.ram} GB RAM") }
+    l.sorted().forEach { println("${it.price}€") }
+    println("----")
+    l.sortedWith(ComparatorRam()).forEach { println("${it.ram} GB RAM") }
+}
+
+fun main() {
+    list()
+    println("=======")
+    set()
+    println("=======")
+    map()
+    println("=======")
+    filtering()
+    println("=======")
+    partition()
+    println("=======")
+    testing()
+    println("=======")
+    grouping()
+    println("=======")
+    aggregate()
+    println("=======")
+    ordering()
+}
+
+class User(val name: String)
